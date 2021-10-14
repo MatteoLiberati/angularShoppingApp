@@ -1,21 +1,21 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
-        <!-- NAVBAR HEADER -->
-        <div class="navbar-header">
-            <a href="#" class="navbar-brand">Recipe Book</a>
-        </div>
-
-        <!-- MENU COLLAPSE -->
-        <div class="collapse navbar-collapse bd">
+            <div class="navbar-header">
+                <a routerLink="/" class="navbar-brand">Recipe Book</a>
+                <button type="button" class="navbar-toggle" (click)="collapsed = !collapsed">
+                  <span class="icon-bar" *ngFor="let iconBar of [1, 2, 3]"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
             <ul class="nav navbar-nav">
                 <li><a href="#">Recipes</a></li>
                 <li><a href="#">Shopping List</a></li>
             </ul>
 
             <!-- DROPDOWN -->
-            <ul class="nav navbar-nav navbar-right bd">
-                <li class="dropdown bd">
-                    <a href="#" class="dropdown-toggle bd" role="button">Manage </a>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" role="button">Manage </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Save Data</a></li>
                         <li><a href="#">Fetch Data</a></li>
