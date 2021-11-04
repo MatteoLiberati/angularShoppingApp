@@ -19,8 +19,7 @@ export class RecipeDetailResolve implements Resolve<Recipe> {
         if(this.recipeService.getRecipes().length > +activeroute.params['id'] && +activeroute.params['id'] >= 0){
             return this.recipeService.getRecipe(+activeroute.params['id']);
         }else{
-            this.recipeService.Selected.emit(false);
-            this.router.navigate(['']);
+            this.router.navigate(['recipes'])
         }
     }
 }

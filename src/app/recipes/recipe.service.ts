@@ -46,9 +46,7 @@ export class RecipeService{
       getRecipes(){
           return this.recipes.slice();
       }
-
-      Selected = new EventEmitter<boolean>();
-
+      
       addNewIngredientsInList(ingredients){
         this.shoppingListService.addIngredients(ingredients);
       }
