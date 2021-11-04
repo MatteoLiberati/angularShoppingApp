@@ -3,7 +3,9 @@ import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { Recipe } from "./recipe.model";
 
-@Injectable()
+@Injectable(
+  {providedIn: "root"}
+)
 
 export class RecipeService{
 
@@ -45,9 +47,13 @@ export class RecipeService{
           return this.recipes.slice();
       }
 
-      recipeSelected = new EventEmitter<Recipe>();
+      Selected = new EventEmitter<boolean>();
 
       addNewIngredientsInList(ingredients){
         this.shoppingListService.addIngredients(ingredients);
+      }
+
+      getRecipe(id){
+        return this.recipes[id];
       }
 }

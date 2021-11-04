@@ -3,9 +3,9 @@
         <app-recipe-list></app-recipe-list>
     </div>
     <div class="col-md-7">
-        <app-recipe-detail [recipeDetail]="dataRecipe" *ngIf="dataRecipe; else textAlternative"></app-recipe-detail>
-        <ng-template #textAlternative>
-            <h3 class="text-center">Please, select a recipe</h3>
+        <router-outlet *ngIf="selected; else unselected"></router-outlet>
+        <ng-template #unselected>
+            <app-unselected-item></app-unselected-item>
         </ng-template>
     </div>
 </div>
