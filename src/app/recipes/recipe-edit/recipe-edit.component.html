@@ -27,15 +27,19 @@
                         <textarea formControlName="description" class="form-control" id="description" cols="30" rows="6"></textarea>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xs-8">
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="col-xs-2">
-                        <input type="number" class="form-control">
-                    </div>
-                    <div class="col-xs-2">
-                        <button class="btn btn-danger">X</button>
+                <div class="row" formArrayName="ingredients">
+                    <div class="col-xs-12">
+                        <div class="row" *ngFor="let ingredient of getIngredientscontrols(); let i = index" [formGroupName]="i">
+                            <div class="col-xs-8">
+                                <input formControlName="name" type="text" class="form-control">
+                            </div>
+                            <div class="col-xs-2">
+                                <input formControlName="amount" type="number" class="form-control">
+                            </div>
+                            <div class="col-xs-2">
+                                <button class="btn btn-danger">X</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
