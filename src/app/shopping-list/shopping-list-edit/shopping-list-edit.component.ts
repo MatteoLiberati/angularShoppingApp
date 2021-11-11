@@ -33,18 +33,15 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
     )
   }
 
-  onAddIngredients(form : NgForm){
+  onSubmit(form : NgForm){
     const value = form.value;
     if(this.editMode){
       this.shoppingListService.updateIngredient(this.editingItemIndex, new Ingredient(value.name, value.amount));
     }else{
-      if(value.name != '' && !isNaN(value.amount) && value.amount != 0){
-        this.shoppingListService.ingredientAdded(new Ingredient(value.name, value.amount))
-      }
-      else{
-        alert("re-check your data. the name of your ingredient is required and the amount must be a number greateer than zero ")
-      }
+      this.shoppingListService.ingredientAdded(new Ingredient(value.name, value.amount))
     }
+    this.editMode = false;
+    form.reset();
   }
 
   ngOnDestroy(){
