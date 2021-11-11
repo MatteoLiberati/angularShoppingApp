@@ -13,7 +13,7 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { UnselectedItemComponent } from './recipes/unselected-item/unselected-item.component';
-import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit-component';
+import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 
 @NgModule({
   declarations: [
