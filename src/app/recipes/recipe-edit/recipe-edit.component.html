@@ -13,12 +13,12 @@
                 <div class="row">
                     <div class="col-xs-12 form-group">
                         <label for="imagePath">Image URL</label>
-                        <input formControlName="imagePath" type="text" class="form-control" id="imagePath">
+                        <input #imagePath formControlName="imagePath" type="text" class="form-control" id="imagePath">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <img src="" alt="" class="fluid-image">
+                        <img [src]="imagePath.value" alt="" class="img-responsive">
                     </div>
                 </div>
                 <div class="row">
