@@ -19,16 +19,12 @@ export class RecipeDetailComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.data.subscribe(
-      (data : Data) => {
-        this.recipeDetail = data['recipeDetail'];
-        }
-      )
     this.route.params.subscribe(
       (params : Params)=>{
         this.id = params['id'];
       }
     )
+    this.recipeDetail = this.recipeService.getRecipe(this.id);
   }
   
   onAddToListIngredients(){

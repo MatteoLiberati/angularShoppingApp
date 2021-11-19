@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RecipeDetailResolve } from './recipes/recipe-detail/recipe-detail-resolve.service';
 import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
+import { RecipeResolver } from './recipes/recipe-resolver.resolver';
 import { RecipesComponent } from './recipes/recipes.component';
 import { UnselectedItemComponent } from './recipes/unselected-item/unselected-item.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
@@ -12,8 +12,8 @@ const routes: Routes = [
   {path: 'recipes', component: RecipesComponent, children: [
     {path: '', component: UnselectedItemComponent},
     {path: 'new', component: RecipeEditComponent},
-    {path: ':id', resolve:{recipeDetail : RecipeDetailResolve} ,component: RecipeDetailComponent},
-    {path: ':id/edit', component: RecipeEditComponent},
+    {path: ':id', resolve: [RecipeResolver], component: RecipeDetailComponent},
+    {path: ':id/edit', resolve: [RecipeResolver], component: RecipeEditComponent},
   ]},
   {path: 'shopping-list', component: ShoppingListComponent}
 ];
