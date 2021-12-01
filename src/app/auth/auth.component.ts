@@ -11,6 +11,8 @@ export class AuthComponent implements OnInit {
 
   constructor(private authService: AuthService) { }
   isLoginMode : boolean = true;
+  isLoading : boolean = false;
+  error : string = null;
 
   ngOnInit(): void {
   }
@@ -25,11 +27,15 @@ export class AuthComponent implements OnInit {
     }else{
       if(form.valid){
         const email = form.value.email;
-        const password = form.value.password
+        const password = form.value.password;
+        this.isLoading = true;
         this.authService.singUp(email, password).subscribe( resData=>{
           console.log(resData);
-        }, error=>{
-          console.log(error);
+          this.isLoading = false;
+        }, errorMessage=>{
+          console.log(errorMessage);
+          this.error = errorMessage;
+          this.isLoading = false;
         });
       }
     }

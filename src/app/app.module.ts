@@ -16,6 +16,7 @@ import { DropdownDirective } from './shared/dropdown.directive';
 import { UnselectedItemComponent } from './recipes/unselected-item/unselected-item.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { AuthComponent } from './auth/auth.component';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AuthComponent } from './auth/auth.component';
     DropdownDirective,
     UnselectedItemComponent,
     RecipeEditComponent,
-    AuthComponent
+    AuthComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
