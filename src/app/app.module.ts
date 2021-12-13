@@ -17,6 +17,7 @@ import { UnselectedItemComponent } from './recipes/unselected-item/unselected-it
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { AuthComponent } from './auth/auth.component';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
+import { UserComponent } from './auth/user/user.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SpinnerComponent } from './shared/spinner/spinner.component';
     UnselectedItemComponent,
     RecipeEditComponent,
     AuthComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
