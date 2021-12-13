@@ -29,7 +29,7 @@
                 minlength="6">
             </div>
             <div>
-                <button class="btn btn-primary" type="submit">{{isLoginMode ? 'Login' : 'Sing Up'}}</button> |
+                <button [disabled]="authForm.invalid" class="btn btn-primary" type="submit">{{isLoginMode ? 'Login' : 'Sing Up'}}</button> |
                 <button class="btn btn-primary" type="button" (click)="switchMode()">{{isLoginMode ? 'Switch to Sing Up' : 'Switch to Login'}}</button>
             </div>
         </form>
