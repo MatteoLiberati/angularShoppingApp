@@ -31,4 +31,23 @@ export class AuthService {
       return throwError(errorMessage);
     }))
   }
+
+  singIn(email:string, password:string){
+    return this.http.post<AuthResponseData>("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAW2XVubRa1LLpJPCMXgCCSCX5mA2_qeMY",
+    {
+      'email' : email,
+      'password' : password,
+      'returnSecureToken' : true,
+    }).pipe(catchError(errorRes=>{
+      let errorMessage = "an error occurred";
+      if(!errorRes.error || !errorRes.error.error){
+        return throwError(errorMessage);
+      }
+      switch(errorRes.error.error.message){
+        case 'EMAIL_EXISTS' :
+          errorMessage = "This email exists already"
+      }
+      return throwError(errorMessage);
+    }))
+  }
 }

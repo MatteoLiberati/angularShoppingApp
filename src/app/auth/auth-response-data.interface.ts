@@ -3,5 +3,6 @@ export interface AuthResponseData {
     'email':string,
     'refreshToken':string,    
     'expiresIn':string,
-    'localId': string
+    'localId': string,
+    'registered'? : boolean
 }
