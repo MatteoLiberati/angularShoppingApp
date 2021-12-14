@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, take, tap, exhaustMap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { Recipe } from '../recipes/recipe.model';
 import { RecipeService } from '../recipes/recipe.service';
@@ -11,17 +11,11 @@ import { RecipeService } from '../recipes/recipe.service';
 export class DataStorageService {
 
   constructor(private http: HttpClient, 
-            private recipeService: RecipeService,
-            private authService: AuthService,
-            ) {}
+            private recipeService: RecipeService) {}
 
   storageData(){
     const recipes = this.recipeService.getRecipes();
-    this.http.put("https://ng-liberati-shopping-app-default-rtdb.firebaseio.com/recipes.json", recipes).subscribe(
-      response=>{
-        console.log(response);
-      }
-    )
+    this.http.put("https://ng-liberati-shopping-app-default-rtdb.firebaseio.com/recipes.json", recipes).subscribe()
   }
 
   fetchRecipes(){

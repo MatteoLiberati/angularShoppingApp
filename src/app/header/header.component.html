@@ -15,14 +15,14 @@
 
             <!-- DROPDOWN -->
             <ul class="nav navbar-nav navbar-right">
-                <li *ngIf="isAuthenticated">
-                    <a class="pointer">Logout</a>
+                <li *ngIf="isAuthenticated" class="pointer" (click)="onLogout()">
+                    <a>Logout</a>
                 </li>
                 <li class="dropdown" *ngIf="isAuthenticated" appDropdown>
                     <a class="dropdown-toggle pointer" role="button">Manage </a>
                     <ul class="dropdown-menu">
-                        <li><a class="pointer" (click)="onSaveData()" >Save Data</a></li>
-                        <li><a class="pointer" (click)="onFetchData()" >Fetch Data</a></li>
+                        <li (click)="onSaveData()" class="pointer" ><a >Save Data</a></li>
+                        <li (click)="onFetchData()" class="pointer"><a>Fetch Data</a></li>
                     </ul>
                 </li>
             </ul>
