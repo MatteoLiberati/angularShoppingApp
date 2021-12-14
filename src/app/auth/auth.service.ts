@@ -44,6 +44,15 @@ export class AuthService {
     this.router.navigate(['/auth']);
   }
 
+  autoLogin(){
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    if(!userData){
+      return;
+    }
+    const userLogged = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate))
+    this.user.next(userLogged);
+  }
+
   private handleError(errorRes : HttpErrorResponse){
     let errorMessage = "an error occurred";
     if(!errorRes.error || !errorRes.error.error){
@@ -69,6 +78,7 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + tokenExpiration * 1000)
     const user = new User(email, id, token, expirationDate);
     this.user.next(user);
+    localStorage.setItem("userData", JSON.stringify(user));
   }
 
 }
