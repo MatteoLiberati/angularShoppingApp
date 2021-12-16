@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AlertComponent } from '../shared/alert/alert.component';
 import { AuthResponseData } from './auth-response-data.interface';
 import { AuthService } from './auth.service';
 
@@ -13,7 +14,8 @@ import { AuthService } from './auth.service';
 export class AuthComponent implements OnInit {
 
   constructor(private authService: AuthService,
-              private router: Router) { }
+              private router: Router,
+              private componentFactoryResolver: ComponentFactoryResolver) { }
 
   isLoginMode : boolean = true;
   isLoading : boolean = false;
@@ -44,8 +46,8 @@ export class AuthComponent implements OnInit {
         this.router.navigate(['/recipes'])
         this.isLoading = false;
       }, errorMessage=>{
-        console.log(errorMessage);
-        this.error = errorMessage;
+        // this.error = errorMessage;
+        this.ShowErrorAlert(errorMessage);
         this.isLoading = false;
       });
       form.reset();
@@ -54,5 +56,9 @@ export class AuthComponent implements OnInit {
 
   onCloseAlert(){
     this.error = null;
+  }
+
+  private ShowErrorAlert(message : string){
+    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
   }
 }
