@@ -7,28 +7,22 @@ import { UnselectedItemComponent } from './unselected-item/unselected-item.compo
 import { RecipeEditComponent } from './recipe-edit/recipe-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from '../app-routing.module';
+import { RecipesComponent } from './recipes.component';
 
 
 
 @NgModule({
   declarations: [
+    RecipesComponent,
     RecipeDetailComponent,
     RecipeListComponent,
     RecipeItemComponent,
-    UnselectedItemComponent,
     RecipeEditComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     AppRoutingModule,
-  ],
-  exports : [
-    RecipeDetailComponent,
-    RecipeListComponent,
-    RecipeItemComponent,
-    UnselectedItemComponent,
-    RecipeEditComponent,
   ]
 })
 export class RecipesModule { }

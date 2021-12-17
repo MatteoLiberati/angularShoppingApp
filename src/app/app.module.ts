@@ -16,12 +16,12 @@ import { AuthInterceptor } from './auth/auth-interceptor.interceptor';
 import { AlertComponent } from './shared/alert/alert.component';
 import { PlaceholderDirective } from './shared/placeholder.directive';
 import { RecipesModule } from './recipes/recipes.module';
+import { UnselectedItemComponent } from './recipes/unselected-item/unselected-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    RecipesComponent,
     ShoppingListEditComponent,
     ShoppingListComponent,
     DropdownDirective,
@@ -29,6 +29,7 @@ import { RecipesModule } from './recipes/recipes.module';
     SpinnerComponent,
     AlertComponent,
     PlaceholderDirective,
+    UnselectedItemComponent,
   ],
   imports: [
     BrowserModule,
