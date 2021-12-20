@@ -8,7 +8,7 @@ import { RecipesComponent } from "./recipes.component";
 import { UnselectedItemComponent } from "./unselected-item/unselected-item.component";
 
 const recipesRoutes =
-    [{path: 'recipes',
+    [{path: '',
             component: RecipesComponent, 
             canActivate : [AuthGuard],
             children: [
