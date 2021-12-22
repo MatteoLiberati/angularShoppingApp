@@ -16,7 +16,7 @@ import { CoreModule } from './core.module';
     UnselectedItemComponent,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
