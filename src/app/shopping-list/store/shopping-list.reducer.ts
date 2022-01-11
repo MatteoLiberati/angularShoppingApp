@@ -1,11 +1,24 @@
+import { SSL_OP_NO_TLSv1_1 } from "constants";
 import { Ingredient } from "../../shared/ingredient.model";
 import * as ShoppingListActions from "./shopping-list.action";
 
-const initialState = {
+export interface State {
+  ingredients : Ingredient[];
+  editedIngredient : Ingredient;
+  editedIngredientIndex : number;
+}
+
+export interface AppState {
+  ShoppingList : State
+}
+
+const initialState : State = {
   ingredients : [
     new Ingredient ("Apple", 5),
     new Ingredient ("Tomato", 10),
-  ]
+  ],
+  editedIngredient : null,
+  editedIngredientIndex : -SSL_OP_NO_TLSv1_1,
 }
 
 export function shoppingListReducer(state = initialState, action : ShoppingListActions.ShoppingListActions){
