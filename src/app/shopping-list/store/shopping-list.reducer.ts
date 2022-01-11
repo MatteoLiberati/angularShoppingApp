@@ -1,4 +1,3 @@
-import { SSL_OP_NO_TLSv1_1 } from "constants";
 import { Ingredient } from "../../shared/ingredient.model";
 import * as ShoppingListActions from "./shopping-list.action";
 
@@ -18,7 +17,7 @@ const initialState : State = {
     new Ingredient ("Tomato", 10),
   ],
   editedIngredient : null,
-  editedIngredientIndex : -SSL_OP_NO_TLSv1_1,
+  editedIngredientIndex : -1,
 }
 
 export function shoppingListReducer(state = initialState, action : ShoppingListActions.ShoppingListActions){
@@ -56,6 +55,18 @@ export function shoppingListReducer(state = initialState, action : ShoppingListA
         ingredients : state.ingredients.filter((ig, index)=>{
           return index !== action.payload;
         })
+      }
+    case ShoppingListActions.START_EDIT:
+      return{
+        ...state,
+        editedIngredientIndex : action.payload,
+        editedIngredient : {...state.ingredients[action.payload]},
+      }
+    case ShoppingListActions.STOP_EDIT:
+      return{
+        ...state,
+        editedIngredientIndex : -1,
+        editedIngredient : null,
       }
     default:
       return state;
