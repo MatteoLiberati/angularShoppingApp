@@ -9,7 +9,8 @@ import { UnselectedItemComponent } from './recipes/unselected-item/unselected-it
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
 import { StoreModule } from '@ngrx/store';
-import * as fromApp from "./store/app.reducer"
+import * as fromApp from "./store/app.reducer";
+import { EffectsModule } from '@ngrx/effects'
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import * as fromApp from "./store/app.reducer"
     HttpClientModule,
     SharedModule,
     CoreModule,
-    StoreModule.forRoot(fromApp.appReducer)
+    StoreModule.forRoot(fromApp.appReducer),
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot({}, {})
   ],
   bootstrap: [AppComponent],
 })
