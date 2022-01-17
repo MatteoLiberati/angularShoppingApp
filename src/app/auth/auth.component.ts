@@ -30,6 +30,13 @@ export class AuthComponent implements OnInit, OnDestroy {
   @ViewChild(PlaceholderDirective, {static:false}) alertHost : PlaceholderDirective;
 
   ngOnInit(): void {
+    this.store.select("auth").subscribe(authState=>{
+      this.isLoading = authState.isLoading;
+      this.error = authState.error;
+      if(this.error){
+        this.ShowErrorAlert(this.error);
+      }
+    })
   }
 
   switchMode(){

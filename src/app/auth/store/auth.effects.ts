@@ -1,15 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType  } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AuthResponseData } from '../auth-response-data.interface';
 import * as AuthActions from './auth.actions';
 
 @Injectable()
 export class AuthEffects {
-  constructor(private actions$: Actions, private http: HttpClient) {}
+  constructor(private actions$: Actions,
+              private http: HttpClient,
+              private router: Router) {}
   authLogin = createEffect(()=>this.actions$.pipe(
     ofType(AuthActions.LOGIN_START),
     switchMap((authData: AuthActions.LoginStart) =>
@@ -26,17 +29,44 @@ export class AuthEffects {
         .pipe(
           map(resData => {
             const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000)
-            return of(new AuthActions.Login({
+            return new AuthActions.Login({
               email: resData.email,
               localId: resData.localId,
               idToken: resData.idToken,
               expiresIn : expirationDate,
-            }));
+            });
           }),
-          catchError(error => {
-            return of();
+          catchError(errorRes => {
+            let errorMessage = "an error occurred";
+            if(!errorRes.error || !errorRes.error.error){
+              return of(new AuthActions.LoginFail(errorMessage));
+            }
+            switch(errorRes.error.error.message){
+              case 'EMAIL_EXISTS' :
+                errorMessage = "This email exists already"
+                break;
+              case 'EMAIL_NOT_FOUND':
+                errorMessage = "This email does not exist."
+                break;
+              case 'INVALID_PASSWORD':
+                errorMessage = "This password is invalid."
+                break;
+              case 'USER_DISABLED':
+                errorMessage = "This user account has been disabled."
+            }
+            return of(new AuthActions.LoginFail(errorMessage));
           }),
         )
     )
-  ),{ dispatch: false });
+  ));
+
+  authSuccess = createEffect(()=>
+    this.actions$.pipe(
+      ofType(AuthActions.LOGIN),
+      tap(()=> {
+        this.router.navigate(["/"])
+      })
+    ),
+    { dispatch: false }
+  )
 }
