@@ -33,9 +33,9 @@ export class AuthEffects {
               expiresIn : expirationDate,
             }));
           }),
-          // catchError(error => {
-          //   return of();
-          // }),
+          catchError(error => {
+            return of();
+          }),
         )
     )
   ),{ dispatch: false });
