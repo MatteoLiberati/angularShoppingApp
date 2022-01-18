@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType  } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AuthResponseData } from '../auth-response-data.interface';
 import * as AuthActions from './auth.actions';
@@ -13,6 +13,11 @@ export class AuthEffects {
   constructor(private actions$: Actions,
               private http: HttpClient,
               private router: Router) {}
+
+  authSingup = createEffect(()=>
+    this.actions$.pipe(ofType(AuthActions.SINGUP_START))
+  ,{dispatch : false});
+
   authLogin = createEffect(()=>this.actions$.pipe(
     ofType(AuthActions.LOGIN_START),
     switchMap((authData: AuthActions.LoginStart) =>
@@ -29,7 +34,7 @@ export class AuthEffects {
         .pipe(
           map(resData => {
             const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000)
-            return new AuthActions.Login({
+            return new AuthActions.AuthenticateSuccess({
               email: resData.email,
               localId: resData.localId,
               idToken: resData.idToken,
@@ -39,7 +44,7 @@ export class AuthEffects {
           catchError(errorRes => {
             let errorMessage = "an error occurred";
             if(!errorRes.error || !errorRes.error.error){
-              return of(new AuthActions.LoginFail(errorMessage));
+              return of(new AuthActions.AuthenticateFail(errorMessage));
             }
             switch(errorRes.error.error.message){
               case 'EMAIL_EXISTS' :
@@ -54,7 +59,7 @@ export class AuthEffects {
               case 'USER_DISABLED':
                 errorMessage = "This user account has been disabled."
             }
-            return of(new AuthActions.LoginFail(errorMessage));
+            return of(new AuthActions.AuthenticateFail(errorMessage));
           }),
         )
     )
@@ -62,7 +67,7 @@ export class AuthEffects {
 
   authSuccess = createEffect(()=>
     this.actions$.pipe(
-      ofType(AuthActions.LOGIN),
+      ofType(AuthActions.AUTHENTICATE_SUCCESS),
       tap(()=> {
         this.router.navigate(["/"])
       })
