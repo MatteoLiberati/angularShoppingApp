@@ -1,12 +1,11 @@
 import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+
 import { Observable, Subscription } from 'rxjs';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder.directive';
 import { AuthResponseData } from './auth-response-data.interface';
-import { AuthService } from './auth.service';
 import * as fromApp from '../store/app.reducer';
 import * as AuthActions from './store/auth.actions';
 
@@ -18,9 +17,7 @@ import * as AuthActions from './store/auth.actions';
 })
 export class AuthComponent implements OnInit, OnDestroy {
 
-  constructor(private authService: AuthService,
-              private router: Router,
-              private componentFactoryResolver: ComponentFactoryResolver,
+  constructor(private componentFactoryResolver: ComponentFactoryResolver,
               private store: Store<fromApp.AppState>) { }
 
   isLoginMode : boolean = true;
@@ -52,28 +49,15 @@ export class AuthComponent implements OnInit, OnDestroy {
       const password = form.value.password;
       this.isLoading = true;
       if(this.isLoginMode){
-        // this.authObs = this.authService.singIn(email, password);
         this.store.dispatch(new AuthActions.LoginStart({email : email, password : password}))
       }else{
-        // this.authObs = this.authService.singUp(email, password);
         this.store.dispatch(new AuthActions.SingupStart({email : email, password : password}))
       }
-
-      // this.authObs.subscribe( resData=>{
-      //   console.log(resData);
-      //   this.router.navigate(['/recipes'])
-      //   this.isLoading = false;
-      // }, errorMessage=>{
-      //   // this.error = errorMessage;
-      //   this.ShowErrorAlert(errorMessage);
-      //   this.isLoading = false;
-      // });
       form.reset();
     }
   }
 
   onCloseAlert(){
-    // this.error = null;
     this.store.dispatch(new AuthActions.ClearErrors());
   }
 
