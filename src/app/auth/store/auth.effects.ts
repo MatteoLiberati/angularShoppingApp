@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthResponseData } from '../auth-response-data.interface';
 import * as AuthActions from './auth.actions';
+import { User } from '../user.model';
 
 @Injectable()
 export class AuthEffects {
@@ -17,12 +18,12 @@ export class AuthEffects {
     private router: Router
   ) {}
 
-  authSingup = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.SINGUP_START),
-        switchMap((authData: AuthActions.SingupStart) =>
-          this.http.post<AuthResponseData>(
+  authSingup = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.SINGUP_START),
+      switchMap((authData: AuthActions.SingupStart) =>
+        this.http
+          .post<AuthResponseData>(
             'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' +
               environment.firebaseAPIkey,
             {
@@ -39,9 +40,8 @@ export class AuthEffects {
               return handleError(errorRes);
             })
           )
-        )
-      ),
-    { dispatch: false }
+      )
+    )
   );
 
   authLogin = createEffect(() =>
@@ -80,12 +80,60 @@ export class AuthEffects {
       ),
     { dispatch: false }
   );
+
+  autoLogin = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.AUTO_LOGIN),
+        map(() => {
+          const userData = JSON.parse(localStorage.getItem('userData'));
+          if (!userData) {
+            return {type: "DUMMY"};
+          }
+          const userLogged = new User(
+            userData.email,
+            userData.id,
+            userData._token,
+            new Date(userData._tokenExpirationDate)
+          );
+          if (userLogged.token) {
+            return new AuthActions.AuthenticateSuccess({
+              email: userData.email,
+              localId: userData.id,
+              idToken: userData._token,
+              expiresIn: new Date(userData._tokenExpirationDate),
+            });
+          }
+          return {type: "DUMMY"};
+        })
+      ),
+  );
+
+  authLogout = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.LOGOUT),
+        tap(() => {
+          if (localStorage.getItem('userData')) {
+            localStorage.removeItem('userData');
+          }
+        })
+      ),
+    { dispatch: false }
+  );
 }
 
 const handleAuthentication = (resData) => {
   const expirationDate = new Date(
     new Date().getTime() + +resData.expiresIn * 1000
   );
+  const user = new User(
+    resData.emai,
+    resData.localId,
+    resData.idToken,
+    expirationDate
+  );
+  localStorage.setItem('userData', JSON.stringify(user));
   return new AuthActions.AuthenticateSuccess({
     email: resData.email,
     localId: resData.localId,

@@ -52,9 +52,9 @@ export class AuthService {
       clearTimeout(this.tokenExpirationTimer)
     }
     this.tokenExpirationTimer = null;
-    if(localStorage.getItem("userData")){
-      localStorage.removeItem("userData");
-    }
+    // if(localStorage.getItem("userData")){
+    //   localStorage.removeItem("userData");
+    // }
   }
 
   autoLogout(expirationDuration:number){
@@ -64,15 +64,17 @@ export class AuthService {
   }
 
   autoLogin(){
-    const userData = JSON.parse(localStorage.getItem("userData"));
-    if(!userData){
-      return;
-    }
+    // const userData = JSON.parse(localStorage.getItem("userData"));
+    // if(!userData){
+    //   return;
+    // }
     // const userLogged = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate))
-    this.store.dispatch(new AuthAction.AuthenticateSuccess({email: userData.email, localId: userData.id, idToken: userData._token, expiresIn : new Date(userData._tokenExpirationDate)}));
+    // if(userLogged.token){
+    //   this.store.dispatch(new AuthAction.AuthenticateSuccess({email: userData.email, localId: userData.id, idToken: userData._token, expiresIn : new Date(userData._tokenExpirationDate)}));
+    // }
     // this.user.next(userLogged);
-    const expirationDuration =  new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
-    this.autoLogout(expirationDuration);
+    // const expirationDuration =  new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+    // this.autoLogout(expirationDuration);
   }
 
   // private handleError(errorRes : HttpErrorResponse){
