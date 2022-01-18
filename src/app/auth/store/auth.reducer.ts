@@ -39,6 +39,7 @@ export function authReducer(
         error : null,
       };
     case AuthActions.LOGIN_START:
+    case AuthActions.SINGUP_START:
       return {
         ...state,
         user: null,
@@ -52,6 +53,11 @@ export function authReducer(
         isLoading: false,
         error : action.payload,
       };
+    case AuthActions.CLEAR_ERRORS:
+      return{
+        ...state,
+        error : null,
+      }
     default:
       return state;
   }
