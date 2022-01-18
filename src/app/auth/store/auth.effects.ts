@@ -9,13 +9,15 @@ import { environment } from 'src/environments/environment';
 import { AuthResponseData } from '../auth-response-data.interface';
 import * as AuthActions from './auth.actions';
 import { User } from '../user.model';
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class AuthEffects {
   constructor(
     private actions$: Actions,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
   ) {}
 
   authSingup = createEffect(() =>
@@ -33,6 +35,9 @@ export class AuthEffects {
             }
           )
           .pipe(
+            tap(resData=>{
+              this.authService.setLogoutTimer(+resData.expiresIn * 1000);
+            }),
             map((resData) => {
               return handleAuthentication(resData);
             }),
@@ -59,6 +64,9 @@ export class AuthEffects {
             }
           )
           .pipe(
+            tap(resData=>{
+              this.authService.setLogoutTimer(+resData.expiresIn * 1000);
+            }),
             map((resData) => {
               return handleAuthentication(resData);
             }),
@@ -73,7 +81,7 @@ export class AuthEffects {
   authRedirect = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.AUTHENTICATE_SUCCESS, AuthActions.LOGOUT),
+        ofType(AuthActions.AUTHENTICATE_SUCCESS),
         tap(() => {
           this.router.navigate(['/']);
         })
@@ -97,6 +105,8 @@ export class AuthEffects {
             new Date(userData._tokenExpirationDate)
           );
           if (userLogged.token) {
+            const expirationDuration =  new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+            this.authService.setLogoutTimer(expirationDuration);
             return new AuthActions.AuthenticateSuccess({
               email: userData.email,
               localId: userData.id,
@@ -114,6 +124,8 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.LOGOUT),
         tap(() => {
+          this.router.navigate(['/auth']);
+          this.authService.clearLogoutTimer();
           if (localStorage.getItem('userData')) {
             localStorage.removeItem('userData');
           }
