@@ -13,6 +13,7 @@ import { UnselectedItemComponent } from './recipes/unselected-item/unselected-it
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
 import * as fromApp from "./store/app.reducer";
+import { RecipeEffects } from "./recipes/store/recipe.effects";
 import { AuthEffects } from './auth/store/auth.effects';
 import { environment } from 'src/environments/environment';
 
@@ -29,9 +30,9 @@ import { environment } from 'src/environments/environment';
     SharedModule,
     CoreModule,
     StoreModule.forRoot(fromApp.appReducer),
+    EffectsModule.forRoot([AuthEffects, RecipeEffects]),
     StoreDevtoolsModule.instrument({logOnly : environment.production}),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([AuthEffects]),
   ],
   bootstrap: [AppComponent],
 })
