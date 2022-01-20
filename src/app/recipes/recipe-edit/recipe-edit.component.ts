@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { RecipeService } from '../recipe.service';
 import * as fromApp from "../../store/app.reducer";
+import * as RecipeActions from '../store/recipe.actions';
 import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -13,10 +15,11 @@ import { map } from 'rxjs/operators';
   templateUrl: './recipe-edit.component.html',
   styleUrls: ['./recipe-edit.component.css']
 })
-export class RecipeEditComponent implements OnInit {
+export class RecipeEditComponent implements OnInit, OnDestroy {
   id : number;
   editMode : boolean = false;
   recipeForm : FormGroup;
+  private subStore : Subscription;
 
   constructor(
     private router: Router,
@@ -42,7 +45,7 @@ export class RecipeEditComponent implements OnInit {
     let recipeIngredients = new FormArray([]);
 
     if(this.editMode){
-      this.store.select("recipes").pipe(map(recipesState => {
+      this.subStore = this.store.select("recipes").pipe(map(recipesState => {
         return recipesState.recipes.find((recipe,index)=>{
           return index === this.id;
         })
@@ -79,9 +82,11 @@ export class RecipeEditComponent implements OnInit {
 
   onSubmit(){
     if(this.editMode){
-      this.recipeService.updateRecipe(this.id, this.recipeForm.value)
+      // this.recipeService.updateRecipe(this.id, this.recipeForm.value)
+      this.store.dispatch(new RecipeActions.UpdateRecipe({index: this.id, recipe: this.recipeForm.value}))
     }else{
-      this.recipeService.addRecipe(this.recipeForm.value);
+      // this.recipeService.addRecipe(this.recipeForm.value);
+      this.store.dispatch(new RecipeActions.AddRecipe(this.recipeForm.value));
     }
     this.router.navigate(['']);
     this.onDelete();
@@ -97,5 +102,11 @@ export class RecipeEditComponent implements OnInit {
 
   getIngredientscontrols(){
     return (<FormArray>this.recipeForm.get("ingredients")).controls;
+  }
+
+  ngOnDestroy(){
+    if(this.subStore){
+      this.subStore.unsubscribe();
+    }
   }
 }
