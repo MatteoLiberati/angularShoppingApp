@@ -25,8 +25,6 @@ export function authReducer(
         action.payload.idToken,
         action.payload.expiresIn
       );
-      console.log("sono nel reducer");
-      console.log(user);
 
       return {
         ...state,
