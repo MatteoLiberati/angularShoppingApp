@@ -17,11 +17,20 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.store.select("auth").pipe(take(1),map(auth => auth.user), map(auth=> {
-      if(!!auth){
-        return !!auth;
-      }
-      return this.router.createUrlTree(["/auth"]);
+    return this.store.select("auth").pipe(take(1),map(auth =>{
+      return auth.user
+    }), map(user=> {
+      // if(!!auth){
+      //   return !!auth;
+      // }
+      // return this.router.createUrlTree(["/auth"]);
+      console.log("sono nella guard");
+      console.log(user);
+      const isAuth = !!user;
+        if (isAuth) {
+          return true;
+        }
+        return this.router.createUrlTree(['/auth']);
     }));
   }
 
