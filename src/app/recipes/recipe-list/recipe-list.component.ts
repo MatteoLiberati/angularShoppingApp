@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 
-import { RecipeService } from '../recipe.service';
 import { Recipe } from '../recipe.model';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,8 +15,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   recipes : Recipe[] = [];
   subscription : Subscription;
 
-  constructor(private recipeService: RecipeService,
-              private store : Store<fromApp.AppState>) {}
+  constructor(private store : Store<fromApp.AppState>) {}
 
   ngOnInit(){
     this.subscription = this.store.select('recipes')
@@ -29,7 +27,6 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       }
     );
 
-    // this.recipes = this.recipeService.getRecipes();
   }
 
   ngOnDestroy(){
